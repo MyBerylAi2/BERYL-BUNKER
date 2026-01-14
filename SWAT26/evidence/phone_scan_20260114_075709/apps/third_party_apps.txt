@@ -1,0 +1,8 @@
+package:com.squareup.cash
+package:com.microsoft.copilot
+package:com.google.android.contactkeys
+package:com.google.android.apps.authenticator2
+package:com.zhiliaoapp.musically
+package:com.att.mobilesecurity
+package:com.termux
+package:com.onedebit.chime

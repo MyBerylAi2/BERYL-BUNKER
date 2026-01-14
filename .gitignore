@@ -1,0 +1,18 @@
+# Sensitive files - DO NOT PUSH
+.github_token
+*.token
+*_token
+credentials.json
+passwords.txt
+wallet_backup.txt
+.secret_backup*
+id_rsa_backup*
+
+# Logs with potential sensitive data
+logs/alerts.log
+
+# System files
+.DS_Store
+*.swp
+*.swo
+*~

@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRAPS - Honeypot Monitoring Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff0040;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(255, 0, 64, 0.3);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            color: #ff0040;
+            text-shadow: 0 0 20px #ff0040;
+            letter-spacing: 10px;
+        }
+
+        .header .subtitle {
+            color: #888;
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .status-card {
+            background: rgba(30, 30, 50, 0.8);
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 20px 40px;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .status-card.alert {
+            border-color: #ff0040;
+            box-shadow: 0 0 20px rgba(255, 0, 64, 0.3);
+        }
+
+        .status-card.safe {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .status-card h3 {
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+
+        .status-card.alert h3 { color: #ff0040; }
+        .status-card.safe h3 { color: #00ff88; }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1200px) {
+            .grid-container { grid-template-columns: 1fr; }
+        }
+
+        .panel {
+            background: rgba(20, 20, 40, 0.9);
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .panel h2 {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .device-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .device-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            color: #00d4ff;
+        }
+
+        .device-icon {
+            font-size: 1.5em;
+        }
+
+        .honeypot-list {
+            list-style: none;
+        }
+
+        .honeypot-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 15px;
+            margin: 5px 0;
+            background: rgba(50, 50, 70, 0.5);
+            border-radius: 8px;
+            border-left: 4px solid #00ff88;
+        }
+
+        .honeypot-item.triggered {
+            border-left-color: #ff0040;
+            background: rgba(255, 0, 64, 0.1);
+        }
+
+        .honeypot-path {
+            font-family: monospace;
+            color: #aaa;
+            font-size: 0.9em;
+        }
+
+        .honeypot-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .honeypot-status.armed { background: #00ff88; color: #000; }
+        .honeypot-status.triggered { background: #ff0040; color: #fff; animation: pulse 1s infinite; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Attack Map Visualization */
+        .attack-map {
+            position: relative;
+            height: 400px;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(0, 100, 255, 0.1) 0%, transparent 50%),
+                linear-gradient(rgba(0, 50, 100, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 50, 100, 0.1) 1px, transparent 1px);
+            background-size: 100% 100%, 30px 30px, 30px 30px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .map-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #00ff88 0%, transparent 70%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #00ff88;
+            text-shadow: 0 0 10px #00ff88;
+            z-index: 10;
+        }
+
+        .attack-point {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff0040;
+            border-radius: 50%;
+            animation: attackPulse 2s infinite;
+            cursor: pointer;
+        }
+
+        .attack-point::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, #ff0040, transparent);
+            transform-origin: left center;
+        }
+
+        @keyframes attackPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 10px #ff0040; }
+            50% { transform: scale(1.3); box-shadow: 0 0 30px #ff0040; }
+        }
+
+        .attack-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #ff0040, #ff6b6b, transparent);
+            transform-origin: left center;
+            animation: lineFlow 1s infinite;
+        }
+
+        @keyframes lineFlow {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        /* Event Log */
+        .event-log {
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+
+        .log-entry {
+            padding: 10px;
+            margin: 5px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            border-left: 3px solid #ff0040;
+        }
+
+        .log-entry .timestamp {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .log-entry .event-type {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+
+        .log-entry .details {
+            color: #aaa;
+            margin-top: 5px;
+        }
+
+        /* Connection Details */
+        .connection-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .connection-table th,
+        .connection-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .connection-table th {
+            color: #ff6b6b;
+            font-weight: 600;
+        }
+
+        .connection-table tr:hover {
+            background: rgba(255, 0, 64, 0.1);
+        }
+
+        .ip-address {
+            font-family: monospace;
+            color: #00d4ff;
+        }
+
+        .threat-level {
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+
+        .threat-level.high { background: #ff0040; }
+        .threat-level.medium { background: #ff6b00; }
+        .threat-level.low { background: #ffcc00; color: #000; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #333;
+            margin-top: 30px;
+        }
+
+        .footer a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        /* Refresh indicator */
+        .refresh-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #00d4ff;
+        }
+
+        .no-events {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="refresh-indicator">
+        <span id="lastUpdate">Last update: --</span>
+    </div>
+
+    <div class="header">
+        <h1>TRAPS</h1>
+        <p class="subtitle">Honeypot Monitoring & Intrusion Detection Dashboard</p>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-card safe" id="statusCard">
+            <h3 id="alertCount">0</h3>
+            <p>Active Alerts</p>
+        </div>
+        <div class="status-card safe">
+            <h3 id="honeypotCount">6</h3>
+            <p>Honeypots Armed</p>
+        </div>
+        <div class="status-card safe">
+            <h3 id="deviceCount">2</h3>
+            <p>Devices Monitored</p>
+        </div>
+        <div class="status-card safe">
+            <h3 id="blockedCount">0</h3>
+            <p>Attacks Blocked</p>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <!-- Attack Map Panel -->
+        <div class="panel">
+            <h2>Attack Origin Map</h2>
+            <div class="attack-map" id="attackMap">
+                <div class="map-center">YOUR<br>DEVICES</div>
+                <!-- Attack points will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Honeypot Status Panel -->
+        <div class="panel">
+            <h2>Honeypot Status by Device</h2>
+
+            <div class="device-section">
+                <div class="device-header">
+                    <span class="device-icon">💻</span>
+                    <span>Lenovo Linux</span>
+                </div>
+                <ul class="honeypot-list" id="lenovoHoneypots">
+                    <li class="honeypot-item">
+                        <span class="honeypot-path">~/beryl-bunker/honeypots/passwords.txt</span>
+                        <span class="honeypot-status armed">ARMED</span>
+                    </li>
+                    <li class="honeypot-item">
+                        <span class="honeypot-path">~/beryl-bunker/honeypots/credentials.json</span>
+                        <span class="honeypot-status armed">ARMED</span>
+                    </li>
+                    <li class="honeypot-item">
+                        <span class="honeypot-path">~/beryl-bunker/honeypots/wallet_backup.txt</span>
+                        <span class="honeypot-status armed">ARMED</span>
+                    </li>
+                    <li class="honeypot-item">
+                        <span class="honeypot-path">~/Documents/.secret_backup.zip.txt</span>
+                        <span class="honeypot-status armed">ARMED</span>
+                    </li>
+                    <li class="honeypot-item">
+                        <span class="honeypot-path">~/.ssh/id_rsa_backup.txt</span>
+                        <span class="honeypot-status armed">ARMED</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="device-section">
+                <div class="device-header">
+                    <span class="device-icon">📱</span>
+                    <span>Samsung Android</span>
+                </div>
+                <ul class="honeypot-list" id="samsungHoneypots">
+                    <li class="honeypot-item">
+                        <span class="honeypot-path">/sdcard/DCIM/.backup_keys.txt</span>
+                        <span class="honeypot-status armed">ARMED</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <!-- Live Event Log -->
+        <div class="panel">
+            <h2>Live Event Log</h2>
+            <div class="event-log" id="eventLog">
+                <div class="no-events">
+                    <p>No intrusion events detected</p>
+                    <p style="color: #00ff88; margin-top: 10px;">All honeypots secure</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connection Details -->
+        <div class="panel">
+            <h2>Attack Connection Details</h2>
+            <table class="connection-table">
+                <thead>
+                    <tr>
+                        <th>Source IP</th>
+                        <th>Target</th>
+                        <th>Time</th>
+                        <th>Threat</th>
+                    </tr>
+                </thead>
+                <tbody id="connectionTable">
+                    <tr>
+                        <td colspan="4" class="no-events">No attacks recorded</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>TRAPS Honeypot Dashboard | Notifications: <a href="mailto:aimasterandjoel@gmail.com">aimasterandjoel@gmail.com</a></p>
+        <p style="margin-top: 10px; font-size: 0.9em;">Auto-refresh: 5 seconds | Data source: ~/beryl-bunker/logs/honeypot_events.json</p>
+    </div>
+
+    <script>
+        // Configuration
+        const CONFIG = {
+            dataFile: '/home/beryleden1/beryl-bunker/logs/honeypot_events.json',
+            refreshInterval: 5000,
+            emailNotify: 'aimasterandjoel@gmail.com'
+        };
+
+        // Global state
+        let events = [];
+        let attackPoints = [];
+
+        // Load events from JSON file
+        async function loadEvents() {
+            try {
+                const response = await fetch('file://' + CONFIG.dataFile);
+                if (response.ok) {
+                    events = await response.json();
+                    updateDashboard();
+                }
+            } catch (e) {
+                // File might not exist yet or we're running locally
+                // Try localStorage fallback
+                const stored = localStorage.getItem('honeypot_events');
+                if (stored) {
+                    events = JSON.parse(stored);
+                    updateDashboard();
+                }
+            }
+        }
+
+        // Update all dashboard elements
+        function updateDashboard() {
+            updateAlertCount();
+            updateEventLog();
+            updateConnectionTable();
+            updateHoneypotStatus();
+            updateAttackMap();
+            updateLastRefresh();
+        }
+
+        function updateAlertCount() {
+            const alertCount = events.filter(e => e.type === 'ACCESS').length;
+            document.getElementById('alertCount').textContent = alertCount;
+            document.getElementById('blockedCount').textContent = events.filter(e => e.blocked).length;
+
+            const statusCard = document.getElementById('statusCard');
+            if (alertCount > 0) {
+                statusCard.classList.remove('safe');
+                statusCard.classList.add('alert');
+            } else {
+                statusCard.classList.remove('alert');
+                statusCard.classList.add('safe');
+            }
+        }
+
+        function updateEventLog() {
+            const logContainer = document.getElementById('eventLog');
+            if (events.length === 0) {
+                logContainer.innerHTML = `
+                    <div class="no-events">
+                        <p>No intrusion events detected</p>
+                        <p style="color: #00ff88; margin-top: 10px;">All honeypots secure</p>
+                    </div>
+                `;
+                return;
+            }
+
+            logContainer.innerHTML = events.slice(-20).reverse().map(event => `
+                <div class="log-entry">
+                    <span class="timestamp">${event.timestamp}</span>
+                    <span class="event-type">${event.type}</span>
+                    <div class="details">
+                        <strong>File:</strong> ${event.file}<br>
+                        <strong>Device:</strong> ${event.device}<br>
+                        <strong>Source:</strong> ${event.source_ip || 'Local'}<br>
+                        <strong>Process:</strong> ${event.process || 'Unknown'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateConnectionTable() {
+            const tableBody = document.getElementById('connectionTable');
+            const attacks = events.filter(e => e.source_ip);
+
+            if (attacks.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" class="no-events">No attacks recorded</td></tr>';
+                return;
+            }
+
+            tableBody.innerHTML = attacks.slice(-10).reverse().map(attack => `
+                <tr>
+                    <td class="ip-address">${attack.source_ip}</td>
+                    <td>${attack.file}</td>
+                    <td>${attack.timestamp}</td>
+                    <td><span class="threat-level ${attack.threat || 'high'}">${(attack.threat || 'HIGH').toUpperCase()}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        function updateHoneypotStatus() {
+            events.forEach(event => {
+                const items = document.querySelectorAll('.honeypot-item');
+                items.forEach(item => {
+                    const path = item.querySelector('.honeypot-path').textContent;
+                    if (event.file && event.file.includes(path.replace('~', ''))) {
+                        item.classList.add('triggered');
+                        item.querySelector('.honeypot-status').className = 'honeypot-status triggered';
+                        item.querySelector('.honeypot-status').textContent = 'TRIGGERED';
+                    }
+                });
+            });
+        }
+
+        function updateAttackMap() {
+            const map = document.getElementById('attackMap');
+            const existingPoints = map.querySelectorAll('.attack-point, .attack-line');
+            existingPoints.forEach(p => p.remove());
+
+            const attacks = events.filter(e => e.source_ip);
+            attacks.forEach((attack, index) => {
+                // Random position around the edge
+                const angle = (index * 137.5) % 360; // Golden angle for distribution
+                const radius = 150;
+                const x = 50 + Math.cos(angle * Math.PI / 180) * 35;
+                const y = 50 + Math.sin(angle * Math.PI / 180) * 35;
+
+                // Create attack point
+                const point = document.createElement('div');
+                point.className = 'attack-point';
+                point.style.left = `${x}%`;
+                point.style.top = `${y}%`;
+                point.title = `${attack.source_ip}\n${attack.timestamp}`;
+
+                // Create line to center
+                const line = document.createElement('div');
+                line.className = 'attack-line';
+                const centerX = 50;
+                const centerY = 50;
+                const length = Math.sqrt(Math.pow(centerX - x, 2) + Math.pow(centerY - y, 2));
+                const lineAngle = Math.atan2(centerY - y, centerX - x) * 180 / Math.PI;
+
+                line.style.left = `${x}%`;
+                line.style.top = `${y}%`;
+                line.style.width = `${length}%`;
+                line.style.transform = `rotate(${lineAngle}deg)`;
+
+                map.appendChild(line);
+                map.appendChild(point);
+            });
+        }
+
+        function updateLastRefresh() {
+            const now = new Date().toLocaleTimeString();
+            document.getElementById('lastUpdate').textContent = `Last update: ${now}`;
+        }
+
+        // Demo function to add test events (remove in production)
+        function addTestEvent() {
+            const testEvent = {
+                timestamp: new Date().toISOString(),
+                type: 'ACCESS',
+                file: '/home/beryleden1/beryl-bunker/honeypots/passwords.txt',
+                device: 'Lenovo Linux',
+                source_ip: `${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`,
+                process: 'suspicious_process',
+                threat: ['high', 'medium', 'low'][Math.floor(Math.random()*3)]
+            };
+            events.push(testEvent);
+            localStorage.setItem('honeypot_events', JSON.stringify(events));
+            updateDashboard();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadEvents();
+            setInterval(loadEvents, CONFIG.refreshInterval);
+        });
+
+        // Expose for testing
+        window.addTestEvent = addTestEvent;
+        window.events = events;
+    </script>
+</body>
+</html>

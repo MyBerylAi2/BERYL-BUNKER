@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BERYL'S SWAT26 - ROYAL GUARD</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#030405;--bg2:#080a0d;--bg3:#0c0f13;--bg4:#12161b;--bdr:#1a1f28;--bdr-g:#2d2a1a;--gold:#c9a227;--gold2:#e6b830;--gold3:#8b7355;--txt:#d4d4d4;--dim:#5a6270;--red:#dc2626;--red2:#ef4444;--grn:#16a34a}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+.nav{background:var(--bg2);padding:14px 24px;border-bottom:2px solid var(--bdr-g);display:flex;align-items:center;gap:16px}
+.logo{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold3));border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:bold;color:var(--bg);font-size:18px;box-shadow:0 0 20px rgba(201,162,39,0.3)}
+.nav-txt{display:flex;flex-direction:column}
+.title{font-size:18px;font-weight:700;color:var(--gold)}
+.sub{font-size:10px;color:var(--gold3);letter-spacing:2px}
+.nav-st{margin-left:auto;display:flex;gap:20px}
+.st-i{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--grn);box-shadow:0 0 10px var(--grn)}
+.dot.red{background:var(--red2);box-shadow:0 0 15px var(--red2);animation:pls .5s infinite}
+@keyframes pls{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.2)}}
+.alert{display:none;background:linear-gradient(90deg,var(--red),#7f1d1d,var(--red));padding:12px;text-align:center;font-weight:bold;color:#fff;font-size:14px;letter-spacing:2px;animation:afl .5s infinite;border-bottom:2px solid var(--gold)}
+.alert.on{display:block}
+@keyframes afl{0%,100%{background:linear-gradient(90deg,var(--red),#7f1d1d,var(--red))}50%{background:linear-gradient(90deg,#7f1d1d,var(--red),#7f1d1d)}}
+.main{display:grid;grid-template-columns:320px 1fr 360px;gap:16px;padding:16px;height:calc(100vh - 70px)}
+.card{background:var(--bg3);border:1px solid var(--bdr);border-radius:10px;overflow:hidden}
+.card.g{border-color:var(--bdr-g);box-shadow:0 0 20px rgba(201,162,39,0.08)}
+.c-h{padding:14px 18px;border-bottom:1px solid var(--bdr);font-size:13px;font-weight:600;display:flex;justify-content:space-between;align-items:center;background:var(--bg2)}
+.c-h.g{background:linear-gradient(90deg,var(--bg2),rgba(201,162,39,0.08));border-bottom-color:var(--bdr-g)}
+.c-b{padding:14px 18px;overflow-y:auto}
+.bdg{background:var(--red);color:#fff;font-size:10px;padding:3px 10px;border-radius:12px;font-weight:600}
+.bdg.g{background:var(--gold);color:var(--bg)}
+.thr{background:var(--bg2);border-left:4px solid var(--red);padding:12px;margin-bottom:10px;border-radius:6px}
+.thr:hover{border-left-color:var(--gold)}
+.thr-h{display:flex;justify-content:space-between}
+.thr-ip{font-family:monospace;font-size:13px;font-weight:600;color:var(--red2)}
+.thr-tm{font-size:9px;color:var(--dim)}
+.thr-ty{font-size:11px;color:var(--gold);margin-top:4px;font-weight:600}
+.thr-ac{font-size:10px;color:var(--grn);margin-top:6px;font-style:italic}
+.a-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.a-card{background:var(--bg2);border-radius:8px;padding:12px;border:1px solid var(--bdr)}
+.a-card.on{border-color:var(--grn);box-shadow:0 0 10px rgba(22,163,74,0.15)}
+.a-card.hunt{border-color:var(--red);animation:hp 1s infinite}
+@keyframes hp{0%,100%{box-shadow:0 0 10px rgba(220,38,38,0.3)}50%{box-shadow:0 0 25px rgba(220,38,38,0.5)}}
+.a-icon{font-size:24px;margin-bottom:6px}
+.a-title{font-size:12px;font-weight:700;color:var(--gold)}
+.a-role{font-size:9px;color:var(--dim);margin-top:2px}
+.a-state{font-size:10px;margin-top:6px;padding:3px 8px;border-radius:4px;display:inline-block}
+.a-state.w{background:rgba(22,163,74,0.15);color:var(--grn)}
+.a-state.h{background:rgba(220,38,38,0.15);color:var(--red2)}
+.a-state.r{background:rgba(201,162,39,0.15);color:var(--gold)}
+.radar-sec{display:flex;flex-direction:column;align-items:center;padding:20px}
+.r-title{font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:6px}
+.r-sub{font-size:18px;font-weight:700;color:var(--red2);margin-bottom:16px}
+.radar{width:260px;height:260px;border:3px solid var(--gold);border-radius:50%;position:relative;background:radial-gradient(circle,var(--bg) 0%,var(--bg2) 100%);box-shadow:0 0 40px rgba(201,162,39,0.15),inset 0 0 60px rgba(0,0,0,0.8)}
+.r-ring{position:absolute;border:1px solid var(--bdr-g);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.5}
+.r-ring.r1{width:200px;height:200px}.r-ring.r2{width:140px;height:140px}.r-ring.r3{width:80px;height:80px}
+.sweep{position:absolute;top:50%;left:50%;width:130px;height:3px;background:linear-gradient(90deg,var(--gold),transparent);transform-origin:left;animation:sw 3s linear infinite;box-shadow:0 0 20px var(--gold)}
+@keyframes sw{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.r-ctr{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:10}
+.r-cnt{font-size:42px;font-weight:800;color:var(--gold);text-shadow:0 0 20px rgba(201,162,39,0.5)}
+.r-lbl{font-size:9px;color:var(--dim);letter-spacing:1px}
+.t-dot{position:absolute;width:14px;height:14px;background:var(--red2);border-radius:50%;box-shadow:0 0 20px var(--red2),0 0 40px var(--red);animation:tp .5s infinite;z-index:20}
+@keyframes tp{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.7}}
+.t-dot::after{content:'';position:absolute;top:-5px;left:-5px;width:24px;height:24px;border:2px solid var(--red2);border-radius:50%;animation:dr 1s infinite}
+@keyframes dr{0%{transform:scale(1);opacity:1}100%{transform:scale(2.5);opacity:0}}
+.ctrls{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%;margin-top:20px}
+.btn{background:var(--bg2);border:2px solid var(--bdr);color:var(--dim);padding:12px 8px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:600}
+.btn:hover{background:var(--bg4);color:var(--txt);border-color:var(--gold)}
+.btn.on{background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg);border-color:var(--gold)}
+.btn.red:hover{background:var(--red);color:#fff}
+.con{background:var(--bg);border:1px solid var(--bdr);border-radius:8px;padding:12px;font-family:monospace;font-size:10px;height:160px;overflow-y:auto;margin-top:16px}
+.log{margin-bottom:4px}.l-t{color:var(--dim)}.l-s{color:var(--grn)}.l-d{color:var(--red2)}.l-g{color:var(--gold)}
+.stat{display:flex;justify-content:space-between;padding:10px 12px;background:var(--bg2);border-radius:6px;margin-bottom:8px;font-size:12px;border-left:3px solid var(--bdr-g)}
+.s-v{font-weight:700;color:var(--gold)}.s-v.d{color:var(--red2)}.s-v.s{color:var(--grn)}
+.swat{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.sw-m{background:var(--bg2);border:1px solid var(--bdr);padding:8px 4px;border-radius:6px;font-size:9px;text-align:center;cursor:pointer;color:var(--dim)}
+.sw-m:hover{border-color:var(--gold);color:var(--txt)}.sw-m.dep{background:var(--gold);color:var(--bg)}
+.sw-l{font-weight:800;font-size:12px;display:block}
+.a-chat{height:160px;overflow-y:auto;background:var(--bg);border-radius:8px;padding:10px;font-size:11px;font-family:monospace;border:1px solid var(--bdr)}
+.a-msg{margin-bottom:8px;padding:8px;background:var(--bg2);border-radius:6px;border-left:3px solid var(--gold)}
+.a-msg.glm{border-left-color:var(--red2)}.a-msg.smol{border-left-color:var(--grn)}.a-msg.llama{border-left-color:#3b82f6}
+.a-nm{font-weight:bold;font-size:10px;margin-bottom:3px}.a-nm.glm{color:var(--red2)}.a-nm.smol{color:var(--grn)}.a-nm.llama{color:#3b82f6}
+.a-txt{color:var(--dim)}
+.br-btn{flex:1;padding:10px;background:linear-gradient(135deg,var(--gold),var(--gold3));color:var(--bg);border:none;border-radius:6px;font-weight:700;cursor:pointer;font-size:11px;margin:4px}
+.br-btn:hover{background:var(--gold2)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--bdr-g);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="alert" id="alrt">🚨 RED ALERT: HEADLESS RAT DETECTED - KILL SQUAD DEPLOYED 🚨</div>
+<nav class="nav">
+<div class="logo">B</div>
+<div class="nav-txt"><span class="title">BERYL'S SWAT26</span><span class="sub">ROYAL GUARD COMMAND</span></div>
+<div class="nav-st">
+<div class="st-i"><div class="dot"></div>YubiKey</div>
+<div class="st-i"><div class="dot"></div>GLM-4</div>
+<div class="st-i"><div class="dot" id="mDot"></div><span id="mSt">GUARDING</span></div>
+</div>
+</nav>
+<div class="main">
+<div style="display:flex;flex-direction:column;gap:14px">
+<div class="card g" style="flex:1"><div class="c-h g">🎯 ELIMINATED <span class="bdg" id="tBdg">0</span></div><div class="c-b" id="tLst" style="max-height:220px"></div></div>
+<div class="card g"><div class="c-h g">🤖 ROYAL GUARD</div><div class="c-b">
+<div class="a-grid">
+<div class="a-card on" id="glmC"><div class="a-icon">👁️</div><div class="a-title">GLM-4</div><div class="a-role">Commander</div><div class="a-state w" id="glmS">WATCHING</div></div>
+<div class="a-card on"><div class="a-icon">📋</div><div class="a-title">SMOL</div><div class="a-role">Intel</div><div class="a-state r">READY</div></div>
+<div class="a-card on"><div class="a-icon">🦙</div><div class="a-title">LLAMA</div><div class="a-role">Reports</div><div class="a-state r">STANDBY</div></div>
+<div class="a-card on"><div class="a-icon">🎬</div><div class="a-title">EDEN</div><div class="a-role">Video</div><div class="a-state r">READY</div></div>
+</div></div></div>
+</div>
+<div class="card g"><div class="c-h g">⚔️ HEADLESS RAT RADAR</div><div class="c-b radar-sec">
+<div class="r-title">★ PROTECTING QUEEN BERYL ★</div>
+<div class="r-sub" id="rSt">ALL CLEAR</div>
+<div class="radar"><div class="r-ring r1"></div><div class="r-ring r2"></div><div class="r-ring r3"></div><div class="sweep"></div><div class="r-ctr"><div class="r-cnt" id="rCnt">0</div><div class="r-lbl">RATS ON RADAR</div></div><div id="dots"></div></div>
+<div class="ctrls">
+<button class="btn on" onclick="hunt()">🔍 HUNT</button>
+<button class="btn" onclick="prof()">🕵️ PROFILE</button>
+<button class="btn" onclick="trap()">🍯 TRAP</button>
+<button class="btn" onclick="blk()">🛡️ BLOCK</button>
+<button class="btn" onclick="depAll()">⚔️ SWAT-26</button>
+<button class="btn red" onclick="lock()">🚨 LOCKDOWN</button>
+</div>
+<div class="con" id="con"></div>
+</div></div>
+<div style="display:flex;flex-direction:column;gap:14px">
+<div class="card g"><div class="c-h g">📡 OFFICER LACY <span class="bdg g">LIVE</span></div><div class="c-b" style="padding:0">
+<div style="background:linear-gradient(90deg,#1e3a5f,#0d1b2a);padding:8px 12px;display:flex;justify-content:space-between">
+<div style="display:flex;gap:8px;align-items:center"><div style="background:var(--gold);color:#000;font-weight:800;padding:4px 8px;font-size:10px">BERYL NEWS</div><span style="color:#fff;font-size:11px">COMMAND BRIEFING</span></div>
+<div style="background:var(--red);color:#fff;font-size:9px;padding:3px 8px;border-radius:2px;animation:pls 1s infinite">● LIVE</div>
+</div>
+<div style="background:#000;height:140px;display:flex;align-items:center;justify-content:center;position:relative">
+<img src="OFFICER-LACY-3D.png" style="height:100%;width:100%;object-fit:cover" onerror="this.outerHTML='<div style=color:var(--gold);font-size:14px>📺 OFFICER LACY</div>'">
+<div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,#000);padding:30px 10px 8px">
+<div style="color:var(--gold);font-size:9px">⭐ CHIEF INTELLIGENCE</div>
+<div style="color:#fff;font-size:14px;font-weight:700">OFFICER LACY</div>
+</div>
+</div>
+<div style="background:var(--bg2);padding:8px 12px;border-top:2px solid var(--gold)">
+<div style="color:var(--gold);font-size:10px;font-weight:600">📰 BREAKING</div>
+<div style="color:var(--txt);font-size:11px" id="lHl">Security perimeter holding.</div>
+</div>
+<div style="display:flex;padding:8px"><button class="br-btn" onclick="reqBrf()">📋 BRIEFING</button><button class="br-btn" onclick="genVid()">🎬 VIDEO</button></div>
+</div></div>
+<div class="card g"><div class="c-h g">💬 AGENT CHATTER</div><div class="c-b" style="padding:10px"><div class="a-chat" id="chat"></div></div></div>
+<div class="card g"><div class="c-h g">📊 METRICS</div><div class="c-b">
+<div class="stat"><span>RATs Killed</span><span class="s-v" id="sK">0</span></div>
+<div class="stat"><span>IPs Banned</span><span class="s-v" id="sB">0</span></div>
+<div class="stat"><span>Complaints</span><span class="s-v s" id="sC">0</span></div>
+<div class="stat"><span>Active Threats</span><span class="s-v d" id="sA">0</span></div>
+</div></div>
+<div class="card g"><div class="c-h g">⚔️ SWAT-26</div><div class="c-b"><div class="swat" id="sG"></div></div></div>
+</div>
+</div>
+<script>
+const SW={'A':'ANTIGRAV','B':'BACKDOOR','C':'CERTS','D':'DOCKER','E':'ELECTRON','F':'FIREWALL','G':'GEMINI','H':'HEADLESS','I':'IP-KILL','J':'JS-RAT','K':'KERNEL','L':'LISTENER','M':'MALWARE','N':'NETWORK','O':'OAUTH','P':'PROFILER','Q':'QUARANTINE','R':'REVSHELL','S':'SSH','T':'TCP','U':'USB','V':'VM','W':'WEBSHELL','X':'X11','Y':'YUBIKEY','Z':'ZERO-DAY'};
+let kills=0,bans=0,cmps=0,actv=0,rCnt=0,hunting=false;
+const g=document.getElementById('sG');Object.entries(SW).forEach(([l,n])=>{const m=document.createElement('div');m.className='sw-m';m.innerHTML=`<span class="sw-l">${l}</span>${n}`;m.onclick=()=>{m.classList.add('dep');setTimeout(()=>m.classList.remove('dep'),500);log(`⚔️ SWAT-${l}`,'g');kills++;upd()};g.appendChild(m)});
+const GLM=["SCANNING... NO RAT ESCAPES","HOW DARE THEY APPROACH!","TERMINATE WITH PREJUDICE","NO MERCY FOR INTRUDERS"];
+function log(m,t='g'){const c=document.getElementById('con');c.innerHTML+=`<div class="log"><span class="l-t">[${new Date().toLocaleTimeString()}]</span> <span class="l-${t}">${m}</span></div>`;c.scrollTop=c.scrollHeight}
+function chat(a,m){const c=document.getElementById('chat');c.innerHTML+=`<div class="a-msg ${a.toLowerCase()}"><div class="a-nm ${a.toLowerCase()}">${a}</div><div class="a-txt">${m}</div></div>`;c.scrollTop=c.scrollHeight}
+function upd(){document.getElementById('sK').textContent=kills;document.getElementById('sB').textContent=bans;document.getElementById('sC').textContent=cmps;document.getElementById('sA').textContent=actv;document.getElementById('tBdg').textContent=kills;document.getElementById('rCnt').textContent=rCnt}
+function redOn(){document.getElementById('alrt').classList.add('on');document.getElementById('mDot').classList.add('red');document.getElementById('mSt').textContent='RED ALERT';document.getElementById('rSt').textContent='⚠️ RAT DETECTED';document.getElementById('glmC').classList.add('hunt');document.getElementById('glmS').className='a-state h';document.getElementById('glmS').textContent='HUNTING';playAlert()}
+function redOff(){document.getElementById('alrt').classList.remove('on');document.getElementById('mDot').classList.remove('red');document.getElementById('mSt').textContent='GUARDING';document.getElementById('rSt').textContent='ALL CLEAR';document.getElementById('glmC').classList.remove('hunt');document.getElementById('glmS').className='a-state w';document.getElementById('glmS').textContent='WATCHING'}
+function playAlert(){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const o=ctx.createOscillator();const g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=880;o.type='square';g.gain.value=0.1;o.start();setTimeout(()=>o.frequency.value=440,200);setTimeout(()=>o.frequency.value=880,400);setTimeout(()=>{o.stop();ctx.close()},600)}catch(e){}}
+function addRAT(ip,ty){rCnt++;actv++;upd();redOn();const d=document.getElementById('dots');const dot=document.createElement('div');dot.className='t-dot';const a=Math.random()*360,r=50+Math.random()*60;dot.style.left=(130+r*Math.cos(a*Math.PI/180)-7)+'px';dot.style.top=(130+r*Math.sin(a*Math.PI/180)-7)+'px';d.appendChild(dot);log(`🚨 RAT: ${ip}`,'d');chat('GLM-4',`TARGET: ${ip} - PREPARE TO DIE!`);setTimeout(()=>{dot.remove();rCnt--;actv--;kills++;bans++;cmps++;upd();if(rCnt<=0)redOff();const l=document.getElementById('tLst');l.innerHTML=`<div class="thr"><div class="thr-h"><span class="thr-ip">${ip}</span></div><div class="thr-ty">💀 ${ty}</div><div class="thr-ac">✓ ELIMINATED</div></div>`+l.innerHTML;log(`💀 KILLED: ${ip}`,'s');chat('GLM-4',`${ip} DESTROYED!`);chat('SMOL',`Complaint filed.`)},3000+Math.random()*2000)}
+function hunt(){hunting=true;log('🔍 HUNT MODE','g');chat('GLM-4','HUNTING PROTOCOL ACTIVE')}
+function prof(){log('🕵️ PROFILER','g');setTimeout(()=>addRAT('18.97.36.'+Math.floor(Math.random()*255),'PUPPETEER'),2000)}
+function trap(){log('🍯 HONEYPOTS','g');chat('GLM-4','TRAPS SET')}
+function blk(){log('🛡️ BLOCK ALL','s');bans+=actv;actv=0;rCnt=0;document.getElementById('dots').innerHTML='';redOff();upd()}
+function depAll(){log('⚔️ ALL SWAT-26 DEPLOYED','g');document.querySelectorAll('.sw-m').forEach((m,i)=>{setTimeout(()=>{m.classList.add('dep');setTimeout(()=>m.classList.remove('dep'),300)},i*50)});kills+=10;upd()}
+function lock(){log('🚨 LOCKDOWN','d');redOn()}
+function reqBrf(){chat('LLAMA',`REPORT: Kills:${kills} Bans:${bans} Status:SECURE`)}
+function genVid(){chat('EDEN','Generating video briefing...')}
+setInterval(()=>{if(hunting&&Math.random()>.85){const ty=['PUPPETEER','PLAYWRIGHT','HEADLESS','CRAWLEE','CDP'][Math.floor(Math.random()*5)];addRAT('18.97.36.'+Math.floor(Math.random()*255),ty)}},5000);
+setInterval(()=>{if(Math.random()>.7)chat('GLM-4',GLM[Math.floor(Math.random()*GLM.length)])},10000);
+const hl=["Security perimeter holding.","0 breaches detected.","SWAT-26 ready.","Honeypots active.","Queen Beryl protected."];let hi=0;setInterval(()=>{document.getElementById('lHl').textContent=hl[hi];hi=(hi+1)%hl.length},6000);
+log('👑 SWAT26 ONLINE','g');log('👁️ GLM-4 WATCHING','g');chat('GLM-4','Royal Guard active.');chat('LLAMA','Systems operational, Commander
+

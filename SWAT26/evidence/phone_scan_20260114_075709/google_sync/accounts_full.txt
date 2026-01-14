@@ -1,0 +1,112 @@
+User UserInfo{0:Owner:4c13}:
+  Accounts: 2
+    Account {name=tyronnejacques@gmail.com, type=com.google}
+    Account {name=bigrosslazeric79@gmail.com, type=com.google}
+  
+  AccountId, Action_Type, timestamp, UID, TableName, Key
+  Accounts History
+  47,action_called_account_remove,2026-01-09 00:12:15,10208,accounts,40
+  47,action_account_remove,2026-01-09 00:12:15,1000,accounts,41
+  48,action_account_add,2026-01-09 00:12:15,10208,accounts,42
+  48,action_called_account_remove,2026-01-09 00:12:25,10208,accounts,43
+  48,action_account_remove,2026-01-09 00:12:25,1000,accounts,44
+  49,action_account_add,2026-01-09 00:12:25,10208,accounts,45
+  49,action_called_account_remove,2026-01-09 00:13:49,10208,accounts,46
+  49,action_account_remove,2026-01-09 00:13:49,1000,accounts,47
+  50,action_account_add,2026-01-09 00:13:50,10208,accounts,48
+  50,action_called_account_remove,2026-01-09 00:13:58,10208,accounts,49
+  50,action_account_remove,2026-01-09 00:13:59,1000,accounts,50
+  51,action_account_add,2026-01-09 00:13:59,10208,accounts,51
+  51,action_called_account_remove,2026-01-09 00:16:58,10208,accounts,52
+  51,action_account_remove,2026-01-09 00:16:59,1000,accounts,53
+  52,action_account_add,2026-01-09 00:16:59,10208,accounts,54
+  52,action_called_account_remove,2026-01-09 00:18:27,10208,accounts,55
+  52,action_account_remove,2026-01-09 00:18:27,1000,accounts,56
+  53,action_account_add,2026-01-09 00:18:27,10208,accounts,57
+  53,action_called_account_remove,2026-01-09 00:25:09,10208,accounts,58
+  53,action_account_remove,2026-01-09 00:25:09,1000,accounts,59
+  54,action_account_add,2026-01-09 00:25:09,10208,accounts,60
+  54,action_called_account_remove,2026-01-09 00:30:16,10208,accounts,61
+  54,action_account_remove,2026-01-09 00:30:16,1000,accounts,62
+  55,action_account_add,2026-01-09 00:30:16,10208,accounts,63
+  55,action_called_account_remove,2026-01-09 00:37:49,10208,accounts,0
+  55,action_account_remove,2026-01-09 00:37:49,1000,accounts,1
+  56,action_account_add,2026-01-09 00:37:49,10208,accounts,2
+  24,action_clear_password,2026-01-09 17:44:15,10128,accounts,3
+  57,action_account_add,2026-01-09 18:22:33,10150,accounts,4
+  56,action_called_account_remove,2026-01-10 00:40:25,10208,accounts,5
+  56,action_account_remove,2026-01-10 00:40:25,1000,accounts,6
+  58,action_account_add,2026-01-10 00:40:25,10208,accounts,7
+  58,action_called_account_remove,2026-01-10 00:40:49,10208,accounts,8
+  58,action_account_remove,2026-01-10 00:40:49,1000,accounts,9
+  59,action_account_add,2026-01-10 00:40:49,10208,accounts,10
+  -1,action_called_account_add,2026-01-10 01:10:33,10143,accounts,11
+  60,action_account_add,2026-01-10 01:11:58,10128,accounts,12
+  60,action_clear_password,2026-01-10 01:12:00,10128,accounts,13
+  3,action_clear_password,2026-01-10 02:30:32,10128,accounts,14
+  59,action_called_account_remove,2026-01-12 18:19:09,10208,accounts,15
+  59,action_account_remove,2026-01-12 18:19:09,1000,accounts,16
+  61,action_account_add,2026-01-12 18:19:10,10208,accounts,17
+  61,action_called_account_remove,2026-01-12 18:19:22,10208,accounts,18
+  61,action_account_remove,2026-01-12 18:19:22,1000,accounts,19
+  62,action_account_add,2026-01-12 18:19:22,10208,accounts,20
+  62,action_called_account_remove,2026-01-12 18:19:27,10208,accounts,21
+  62,action_account_remove,2026-01-12 18:19:27,1000,accounts,22
+  63,action_account_add,2026-01-12 18:19:27,10208,accounts,23
+  63,action_called_account_remove,2026-01-12 18:19:45,10208,accounts,24
+  63,action_account_remove,2026-01-12 18:19:45,1000,accounts,25
+  64,action_account_add,2026-01-12 18:19:45,10208,accounts,26
+  25,action_called_account_remove,2026-01-13 00:15:52,1000,accounts,27
+  25,action_account_remove,2026-01-13 00:15:53,10128,accounts,28
+  57,action_called_account_remove,2026-01-13 00:16:01,1000,accounts,29
+  57,action_account_remove,2026-01-13 00:16:04,10150,accounts,30
+  64,action_called_account_remove,2026-01-13 00:16:08,1000,accounts,31
+  64,action_called_account_remove,2026-01-13 00:16:11,1000,accounts,32
+  64,action_called_account_remove,2026-01-13 00:16:15,1000,accounts,33
+  24,action_called_account_remove,2026-01-13 00:16:26,1000,accounts,34
+  24,action_account_remove,2026-01-13 00:16:26,10128,accounts,35
+  64,action_called_account_remove,2026-01-13 00:16:38,1000,accounts,36
+  64,action_called_account_remove,2026-01-13 00:16:43,1000,accounts,37
+  64,action_called_account_remove,2026-01-13 00:16:50,1000,accounts,38
+  64,action_authenticator_remove,2026-01-13 00:17:06,1000,accounts,39
+  
+  Active Sessions: 1
+    Session: expectLaunch false, connected false, stats (0/0/0), lifetime 38.391, hasFeatures, Account {name=tyronnejacques@gmail.com, type=com.google}, android.account.DEVICE_OR_PROFILE_OWNER_ALLOWED
+  
+  RegisteredServicesCache: 5 services
+    ServiceInfo: AuthenticatorDescription {type=com.google.android.gm.pop3}, ComponentInfo{com.google.android.gm/com.android.email.service.Pop3AuthenticatorService}, uid 10143
+    ServiceInfo: AuthenticatorDescription {type=com.google}, ComponentInfo{com.google.android.gms/com.google.android.gms.auth.account.authenticator.GoogleAccountAuthenticatorService}, uid 10128
+    ServiceInfo: AuthenticatorDescription {type=com.zhiliaoapp.account}, ComponentInfo{com.zhiliaoapp.musically/com.ss.android.ugc.trill.account.TiktokAuthService}, uid 10210
+    ServiceInfo: AuthenticatorDescription {type=com.google.android.gm.exchange}, ComponentInfo{com.google.android.gm/com.android.email.service.EasAuthenticatorService}, uid 10143
+    ServiceInfo: AuthenticatorDescription {type=com.google.android.gm.legacyimap}, ComponentInfo{com.google.android.gm/com.android.email.service.LegacyImapAuthenticatorService}, uid 10143
+  
+  Account visibility:
+    bigrosslazeric79@gmail.com
+      com.google.android.apps.maps, 2
+      com.google.android.apps.tachyon, 2
+      com.google.android.apps.wellbeing, 2
+      com.google.android.setupwizard, 2
+      com.google.android.apps.messaging, 2
+      com.google.android.apps.photos, 2
+      com.google.android.googlequicksearchbox, 2
+      com.google.android.apps.safetyhub, 2
+      com.google.android.apps.docs, 2
+      com.google.android.apps.chromecast.app, 2
+      com.google.android.apps.restore, 2
+      com.google.android.youtube, 2
+      com.google.android.apps.authenticator2, 2
+    tyronnejacques@gmail.com
+      com.google.android.apps.maps, 2
+      com.google.android.apps.tachyon, 2
+      com.google.android.apps.wellbeing, 2
+      com.google.android.setupwizard, 2
+      com.google.android.apps.messaging, 2
+      com.google.android.apps.photos, 2
+      com.google.android.googlequicksearchbox, 2
+      com.google.android.apps.safetyhub, 2
+      com.google.android.apps.docs, 2
+      com.google.android.apps.chromecast.app, 2
+      com.google.android.apps.restore, 2
+      com.google.android.youtube, 2
+      com.google.android.apps.authenticator2, 2
+  

@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(/usr/bin/adb devices:*)",
+      "Bash(adb devices:*)",
+      "Bash(adb kill-server:*)",
+      "Bash(adb start-server:*)",
+      "Bash(lsusb:*)",
+      "Bash(adb pair:*)",
+      "Bash(/tmp/platform-tools/adb kill-server)",
+      "Bash(/tmp/platform-tools/adb pair:*)",
+      "Bash(/tmp/platform-tools/adb shell \"su -c ''id''\")",
+      "Bash(/tmp/platform-tools/adb shell \"getprop | grep -iE ''secure|boot|verify|unlock|tamper|oem''\")",
+      "Bash(/tmp/platform-tools/adb shell:*)",
+      "Bash(/tmp/platform-tools/adb:*)",
+      "Bash(chmod:*)",
+      "Bash(bash:*)"
+    ]
+  }
+}
